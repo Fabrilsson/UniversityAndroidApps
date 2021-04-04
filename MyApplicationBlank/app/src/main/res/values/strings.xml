@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">My Application Blank</string>
+    <string name="app_usuario">Usuário</string>
+    <string name="app_senha">Senha</string>
+    <string name="app_pagina_atual">Página Atual: __</string>
+    <string name="app_pagina_anterior">Página Anterior</string>
+    <string name="app_proxima_pagina">Próxima Página</string>
+</resources>
