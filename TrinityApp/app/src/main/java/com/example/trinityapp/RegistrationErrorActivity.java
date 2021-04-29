@@ -27,17 +27,17 @@ public class RegistrationErrorActivity extends AppCompatActivity {
         String email = intent.getStringExtra("email");
 
         if (name.isEmpty())
-            errors += "Nome";
+            errors += "Nome, ";
         if (address.isEmpty())
-            errors += "Endereço";
+            errors += "Endereço, ";
         if (number.isEmpty())
-            errors += "Número";
+            errors += "Número, ";
         if (postalCode.isEmpty())
-            errors += "CEP";
+            errors += "CEP, ";
         if (complement.isEmpty())
-            errors += "Complemento";
+            errors += "Complemento, ";
         if (email.isEmpty())
-            errors += "E-mail";
+            errors += "E-mail, ";
 
         TextView textView = (TextView) findViewById(R.id.textView5);
 

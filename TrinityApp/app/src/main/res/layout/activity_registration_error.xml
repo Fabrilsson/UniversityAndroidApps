@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:text="Voltar"
         android:textSize="20dp"
+        android:onClick="onReturnClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
