@@ -10,7 +10,7 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Erro no Cadastro. Os campos %campo1% e %campo2% devem ser preenchidos."
+        android:text="Erro no Cadastro. O(s) campo(s) %errors% deve(m) ser preenchido(s)."
         android:textSize="40dp"
         android:gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/button11"

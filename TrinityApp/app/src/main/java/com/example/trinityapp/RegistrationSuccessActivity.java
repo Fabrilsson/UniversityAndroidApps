@@ -24,7 +24,7 @@ public class RegistrationSuccessActivity extends AppCompatActivity {
         TextView textView = (TextView) findViewById(R.id.textView4);
 
         String text = textView.getText().toString();
-        text.replaceAll("%name%", name);
+        text = text.replaceAll("%name%", name);
 
         textView.setText(text);
     }

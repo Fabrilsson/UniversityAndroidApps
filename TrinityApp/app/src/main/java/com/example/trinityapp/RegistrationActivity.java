@@ -37,7 +37,15 @@ public class RegistrationActivity extends AppCompatActivity {
             number.isEmpty() ||
             postalCode.isEmpty() ||
             complement.isEmpty() ||
-            email.isEmpty()){
+            email.isEmpty()) {
+
+            _registrationErrorIntent.putExtra("name", name);
+            _registrationErrorIntent.putExtra("address", address);
+            _registrationErrorIntent.putExtra("number", number);
+            _registrationErrorIntent.putExtra("postalCode", postalCode);
+            _registrationErrorIntent.putExtra("complement", complement);
+            _registrationErrorIntent.putExtra("email", email);
+
             startActivity(_registrationErrorIntent);
             return;
         }
