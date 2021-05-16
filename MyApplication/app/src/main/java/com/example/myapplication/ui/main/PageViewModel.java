@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 public class PageViewModel extends ViewModel {
 
     private MutableLiveData<Integer> mIndex = new MutableLiveData<>();
@@ -19,6 +21,8 @@ public class PageViewModel extends ViewModel {
     public void setIndex(int index) {
         mIndex.setValue(index);
     }
+
+    public int getIndex() { return mIndex.getValue(); }
 
     public LiveData<String> getText() {
         return mText;

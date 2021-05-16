@@ -2,7 +2,6 @@
     <string name="app_name">ToDo Everything</string>
     <string name="tab_text_1">Done</string>
     <string name="tab_text_2">ToDo</string>
-    <string name="tab_text_3">asdas</string>
     <string name="prompt_email">E-mail</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in_short">Sign in</string>

@@ -1,0 +1,86 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_margin="10dp"
+    android:background="@drawable/custom_shape"
+
+    >
+
+    <EditText
+        android:id="@+id/taskDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TestTxt"
+        android:textSize="30dp"
+        android:textColor="@color/white"
+        android:background="@color/black"
+        android:gravity="center">
+
+    </EditText>
+
+    <Button
+        android:id="@+id/taskRemember"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Remember me"
+        android:textSize="20dp"
+        android:background="@color/black"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:layout_below="@id/taskDescription">
+
+    </Button>
+
+    <Button
+        android:id="@+id/taskAddFinishDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Finish"
+        android:textSize="20dp"
+        android:background="@color/black"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:layout_below="@id/taskRemember">
+
+    </Button>
+
+    <Button
+        android:id="@+id/taskRepeat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Repeat"
+        android:textSize="20dp"
+        android:background="@color/black"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:layout_below="@id/taskAddFinishDate">
+
+    </Button>
+
+    <Button
+        android:id="@+id/taskAddFile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add File"
+        android:textSize="20dp"
+        android:background="@color/black"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:layout_below="@id/taskRepeat">
+
+    </Button>
+
+    <EditText
+        android:id="@+id/taskAnotation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="TestTxt"
+        android:textSize="30dp"
+        android:layout_below="@id/taskAddFile"
+        android:textColor="@color/white"
+        android:background="@color/black"
+        android:gravity="top">
+
+    </EditText>
+
+</RelativeLayout>
