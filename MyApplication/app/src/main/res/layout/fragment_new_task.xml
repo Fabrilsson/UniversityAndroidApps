@@ -76,6 +76,7 @@
         android:layout_height="match_parent"
         android:text="TestTxt"
         android:textSize="30dp"
+        android:paddingStart="20dp"
         android:layout_below="@id/taskAddFile"
         android:textColor="@color/white"
         android:background="@color/black"
