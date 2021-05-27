@@ -7,20 +7,63 @@
     tools:context=".ui.FormFragment"
     android:clickable="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-    </TextView>
+        <Button
+            android:id="@+id/returnButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="return"
+            android:layout_gravity="left"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            >
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="return"
-        android:onClick="returnToMain"
-        >
+        </Button>
 
-    </Button>
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="placeholder"
+            android:layout_marginTop="50dp"
+            android:textSize="30dp">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/txtEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="placeholder"
+            android:layout_marginTop="50dp"
+            android:textSize="30dp">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/txtPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="placeholder"
+            android:layout_marginTop="50dp"
+            android:textSize="30dp">
+
+        </TextView>
+
+        <ImageView
+            android:id="@+id/imageview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginTop="30dp">
+
+        </ImageView>
+
+    </LinearLayout>
 
 </FrameLayout>

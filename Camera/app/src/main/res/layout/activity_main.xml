@@ -103,14 +103,5 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@mipmap/ic_launcher"
-        android:layout_below="@id/buttons"
-        android:layout_marginTop="30dp">
-
-    </ImageView>
 
 </RelativeLayout>

@@ -41,14 +41,25 @@ public class MainActivity extends AppCompatActivity {
         String emailTxt = email.getText().toString();
         String phoneTxt = phone.getText().toString();
 
-        if(nameTxt.isEmpty())
+        Boolean error = false;
+
+        if(nameTxt.isEmpty()) {
             name.setError("Name must not be blank");
+            error = true;
+        }
 
-        if(emailTxt.isEmpty())
+        if(emailTxt.isEmpty()) {
             email.setError("E-mail must not be blank");
+            error = true;
+        }
 
-        if(phoneTxt.isEmpty())
+        if(phoneTxt.isEmpty()) {
             phone.setError("Phone must not be blank");
+            error = true;
+        }
+
+        if (error)
+            return;
 
         Form form = new Form(nameTxt, emailTxt, phoneTxt, image);
 
@@ -68,9 +79,6 @@ public class MainActivity extends AppCompatActivity {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
 
             image = imageBitmap;
-
-            //ImageView imageView = findViewById(R.id.imageView);
-            //imageView.setImageBitmap(imageBitmap);
         }
     }
 

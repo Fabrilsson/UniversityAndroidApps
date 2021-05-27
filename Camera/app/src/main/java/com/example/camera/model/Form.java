@@ -33,7 +33,7 @@ public class Form implements Serializable {
         return Phone;
     }
 
-    private Bitmap getBitmap() {
+    public Bitmap getBitmap() {
         return Bitmap;
     }
 }
