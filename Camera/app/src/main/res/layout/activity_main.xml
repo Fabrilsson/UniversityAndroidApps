@@ -1,28 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:orientation="vertical">
+    android:id="@+id/main">
 
-    <Button
+    <TextView
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:onClick="dispatchTakePictureIntent"
-        android:text="Take Picture"
-        android:layout_marginTop="70dp">
+        android:text="Name:"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp">
 
-    </Button>
+    </TextView>
+
+    <EditText
+        android:id="@+id/nameText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/name"
+        android:layout_toRightOf="@id/name"
+        android:layout_marginRight="30dp">
+
+    </EditText>
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="E-mail:"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_below="@id/nameText">
+
+    </TextView>
+
+    <EditText
+        android:id="@+id/emailText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/email"
+        android:layout_toRightOf="@id/email"
+        android:layout_marginRight="30dp"
+        android:inputType="textEmailAddress">
+
+    </EditText>
+
+    <TextView
+        android:id="@+id/phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phone:"
+        android:layout_below="@id/emailText"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp">
+
+    </TextView>
+
+    <EditText
+        android:id="@+id/phoneText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/phone"
+        android:layout_toRightOf="@id/phone"
+        android:layout_marginRight="30dp">
+
+    </EditText>
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/phoneText"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        >
+
+        <Button
+            android:id="@+id/picButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="dispatchTakePictureIntent"
+            android:text="Take Picture"
+            android:layout_marginTop="30dp"
+            >
+
+        </Button>
+
+        <Button
+            android:id="@+id/send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="sendContent"
+            android:text="Send"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp">
+
+        </Button>
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@mipmap/ic_launcher">
+        android:src="@mipmap/ic_launcher"
+        android:layout_below="@id/buttons"
+        android:layout_marginTop="30dp">
 
     </ImageView>
 
-</LinearLayout>
+</RelativeLayout>
