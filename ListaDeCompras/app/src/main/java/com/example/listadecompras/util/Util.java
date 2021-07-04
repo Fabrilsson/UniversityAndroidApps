@@ -9,6 +9,10 @@ public class Util {
     private static final SimpleDateFormat sdf = (SimpleDateFormat)SimpleDateFormat.getInstance();
     private static String defaultDatePattern = "MM/dd/yyyy";
 
+    public static Double strToDouble (String data) {
+        return Double.parseDouble(data);
+    }
+
     public static Date strToDateTime (String data) {
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

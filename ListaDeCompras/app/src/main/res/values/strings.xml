@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">ListaDeCompras</string>
+
+    <string name="action_settings">Configurações</string>
+    <string name="label_novo_lembrete">Novo Lembrete</string>
+    <string name="label_editar_lembrete">Editar Lembrete</string>
+    <string name="hint_digitar_lembrete">Digite um lembrete!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

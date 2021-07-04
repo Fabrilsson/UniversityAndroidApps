@@ -1,4 +1,4 @@
-package com.example.listadecompras.domain;
+package com.example.listadecompras.domain.model;
 
 import android.provider.BaseColumns;
 
