@@ -79,10 +79,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewOnCli
     }
 
     private void showActionsDialog(final ShoppingList shoppingList, final int position) {
-        CharSequence colors[] = new CharSequence[]{"Editar", "Deletar"};
+        CharSequence colors[] = new CharSequence[]{"Edit", "Delete"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Escolha uma opção");
+        builder.setTitle("Choose a action");
         builder.setItems(colors, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int acao) {
@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewOnCli
         Fragment newShoppingListFragment = new AddNewShoppingList(products);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.MainActivity, newShoppingListFragment);
+        transaction.setReorderingAllowed(true);
         transaction.addToBackStack(null);
         transaction.commit();
     }

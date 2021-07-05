@@ -8,6 +8,16 @@ public class Product {
     private String name;
     private double price;
 
+    public Product() {
+
+    }
+
+    public Product(int id, String name, double price) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+    }
+
     public int getId() {
         return id;
     }
@@ -37,5 +47,10 @@ public class Product {
 
         public static final String PRODUCT_NAME_COLUMN = "name";
         public static final String PRODUCT_PRICE_COLUMN = "price";
+    }
+
+    public String toString()
+    {
+        return name;
     }
 }
