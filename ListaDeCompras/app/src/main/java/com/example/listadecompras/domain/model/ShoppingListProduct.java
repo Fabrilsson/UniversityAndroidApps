@@ -5,7 +5,7 @@ import android.provider.BaseColumns;
 public class ShoppingListProduct {
     private int id;
     private int productId;
-    private int shoppingListId;
+    private long shoppingListId;
 
     public int getId() {
         return id;
@@ -15,7 +15,7 @@ public class ShoppingListProduct {
         return productId;
     }
 
-    public int getShoppingListId() {
+    public long getShoppingListId() {
         return shoppingListId;
     }
 
@@ -29,6 +29,11 @@ public class ShoppingListProduct {
 
     public void setShoppingListId(int shoppingListId) {
         this.shoppingListId = shoppingListId;
+    }
+
+    public ShoppingListProduct(long shoppingListId, int productId) {
+        this.shoppingListId = shoppingListId;
+        this.productId = productId;
     }
 
     public static final class ShoppingListProductEntry implements BaseColumns {

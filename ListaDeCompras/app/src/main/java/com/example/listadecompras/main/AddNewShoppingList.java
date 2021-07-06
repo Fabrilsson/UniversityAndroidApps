@@ -14,20 +14,29 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.listadecompras.R;
 import com.example.listadecompras.adapter.AddNewShoppingListAdapter;
 import com.example.listadecompras.domain.ProductsHelper;
+import com.example.listadecompras.domain.ShoppingListHelper;
+import com.example.listadecompras.domain.ShoppingListProductHelper;
 import com.example.listadecompras.domain.model.Product;
 import com.example.listadecompras.domain.model.ShoppingList;
+import com.example.listadecompras.domain.model.ShoppingListProduct;
 import com.example.listadecompras.util.RecyclerViewOnClickListenerHack;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AddNewShoppingList extends Fragment implements RecyclerViewOnClickListenerHack {
+
+    private ShoppingListHelper shoppingListHelper;
+    private ShoppingListProductHelper shoppingListProductHelper;
 
     private AddNewShoppingListAdapter addNewShoppingListAdapter;
     private List<Product> products;
@@ -35,7 +44,14 @@ public class AddNewShoppingList extends Fragment implements RecyclerViewOnClickL
 
     private RecyclerView rv;
 
-    public AddNewShoppingList(List<Product> products) {
+    public AddNewShoppingList(
+            ShoppingListHelper shoppingListHelper,
+            ShoppingListProductHelper shoppingListProductHelper,
+            List<Product> products)
+    {
+        this.shoppingListHelper = shoppingListHelper;
+        this.shoppingListProductHelper = shoppingListProductHelper;
+
         this.products = products;
         this.shoppingListProducts = new ArrayList<>();
 
@@ -78,6 +94,33 @@ public class AddNewShoppingList extends Fragment implements RecyclerViewOnClickL
         rv.setHasFixedSize(true);
 
         rv.setAdapter(addNewShoppingListAdapter);
+
+        Button saveButton = (Button)view.findViewById(R.id.saveShoppingList);
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShoppingList shoppingList = new ShoppingList();
+                shoppingList.setDataHora(new Date());
+
+                EditText listNameView = (EditText)view.findViewById(R.id.ListName);
+                String shoppingListName = listNameView == null ? "" : listNameView.getText().toString();
+
+                shoppingList.setName(shoppingListName);
+                List<Product> shoppingListProducts = addNewShoppingListAdapter.getShoppingListProducts();
+                shoppingList.setProducts(shoppingListProducts);
+
+                double totalPrice = shoppingListProducts.stream().mapToDouble(Product::getPrice).sum();
+                shoppingList.setTotalPrice(totalPrice);
+
+                long shoppingListId = shoppingListHelper.insertShoppingList(shoppingList);
+
+                for (Product product:
+                     shoppingListProducts) {
+                    ShoppingListProduct shoppingListProduct = new ShoppingListProduct(shoppingListId, product.getId());
+                }
+            }
+        });
     }
 
     @Nullable

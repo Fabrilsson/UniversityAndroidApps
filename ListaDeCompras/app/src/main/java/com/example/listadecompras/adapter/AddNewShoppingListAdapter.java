@@ -71,4 +71,8 @@ public class AddNewShoppingListAdapter extends RecyclerView.Adapter<AddNewShoppi
     public int getItemCount() {
         return products.size();
     }
+
+    public List<Product> getShoppingListProducts(){
+        return products;
+    }
 }

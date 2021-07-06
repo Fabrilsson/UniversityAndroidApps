@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.listadecompras.adapter.ShoppingListAdapter;
 import com.example.listadecompras.domain.ProductsHelper;
 import com.example.listadecompras.domain.ShoppingListHelper;
+import com.example.listadecompras.domain.ShoppingListProductHelper;
 import com.example.listadecompras.domain.model.Product;
 import com.example.listadecompras.domain.model.ShoppingList;
 import com.example.listadecompras.main.AddNewShoppingList;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewOnCli
 
     private ShoppingListHelper shoppingListHelper;
     private ProductsHelper productsHelper;
+    private ShoppingListProductHelper shoppingListProductHelper;
 
     private ShoppingListAdapter shoppingListAdapter;
 
@@ -46,8 +48,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewOnCli
         setContentView(R.layout.activity_main);
 
         shoppingListHelper = new ShoppingListHelper(this);
-
         productsHelper = new ProductsHelper(this);
+        shoppingListHelper = new ShoppingListHelper(this);
 
         shoppingLists.addAll(shoppingListHelper.getAllShoppingLists());
         products.addAll(productsHelper.getAllProducts());
@@ -103,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewOnCli
     }
 
     private void showAddNewFragment() {
-        Fragment newShoppingListFragment = new AddNewShoppingList(products);
+        Fragment newShoppingListFragment = new AddNewShoppingList(shoppingListHelper, shoppingListProductHelper, products);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.MainActivity, newShoppingListFragment);
         transaction.setReorderingAllowed(true);

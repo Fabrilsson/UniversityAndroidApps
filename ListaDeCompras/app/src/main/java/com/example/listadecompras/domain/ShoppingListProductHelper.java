@@ -2,10 +2,16 @@ package com.example.listadecompras.domain;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.listadecompras.domain.model.Product;
 import com.example.listadecompras.domain.model.ShoppingListProduct;
+import com.example.listadecompras.util.Util;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShoppingListProductHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "shoppingList.db";
@@ -51,5 +57,32 @@ public class ShoppingListProductHelper extends SQLiteOpenHelper {
         db.delete(ShoppingListProduct.ShoppingListProductEntry.TABLE_NAME, ShoppingListProduct.ShoppingListProductEntry._ID + " = ?",
                 new String[]{String.valueOf(shoppingListProduct.getId())});
         db.close();
+    }
+
+    public List<Product> getShoppingListProducts(int shoppingListId) {
+        List<Product> products = new ArrayList<>();
+
+        String selectQuery = "SELECT P.id, P.name, P.price FROM " + Product.ProductEntry.TABLE_NAME + " AS P INNER JOIN " +
+                ShoppingListProduct.ShoppingListProductEntry.TABLE_NAME + " AS SLP ON P.id == SLP.productId WHERE " +
+                ShoppingListProduct.ShoppingListProductEntry.SHOPPINGLISTPRODUCTS_SHOPPINGLISTID_COLUMN + " == "
+                + shoppingListId + " ORDER BY " + Product.ProductEntry.PRODUCT_NAME_COLUMN + " DESC";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if(cursor.moveToFirst()){
+            do{
+                Product product = new Product();
+                product.setId(cursor.getInt(cursor.getColumnIndex(Product.ProductEntry._ID)));
+                product.setName(cursor.getString(cursor.getColumnIndex(Product.ProductEntry.PRODUCT_NAME_COLUMN)));
+                product.setPrice(Util.strToDouble(cursor.getString(cursor.getColumnIndex(Product.ProductEntry.PRODUCT_PRICE_COLUMN))));
+                products.add(product);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+
+        return products;
     }
 }

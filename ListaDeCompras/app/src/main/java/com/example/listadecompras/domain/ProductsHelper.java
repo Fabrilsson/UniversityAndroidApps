@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.listadecompras.domain.model.Product;
 import com.example.listadecompras.domain.model.ShoppingList;
+import com.example.listadecompras.domain.model.ShoppingListProduct;
 import com.example.listadecompras.util.Util;
 
 import java.util.ArrayList;
@@ -95,5 +96,4 @@ public class ProductsHelper extends SQLiteOpenHelper {
 
         return products;
     }
-
 }
