@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.listadecompras.R;
 import com.example.listadecompras.adapter.AddNewShoppingListAdapter;
+import com.example.listadecompras.adapter.ShoppingListAdapter;
 import com.example.listadecompras.domain.ProductsHelper;
 import com.example.listadecompras.domain.ShoppingListHelper;
 import com.example.listadecompras.domain.ShoppingListProductHelper;
@@ -38,6 +39,7 @@ public class AddNewShoppingList extends Fragment implements RecyclerViewOnClickL
     private ShoppingListHelper shoppingListHelper;
     private ShoppingListProductHelper shoppingListProductHelper;
 
+    private ShoppingListAdapter shoppingListAdapter;
     private AddNewShoppingListAdapter addNewShoppingListAdapter;
     private List<Product> products;
     private List<Product> shoppingListProducts;
@@ -46,11 +48,14 @@ public class AddNewShoppingList extends Fragment implements RecyclerViewOnClickL
 
     public AddNewShoppingList(
             ShoppingListHelper shoppingListHelper,
+            ShoppingListAdapter shoppingListAdapter,
             ShoppingListProductHelper shoppingListProductHelper,
             List<Product> products)
     {
         this.shoppingListHelper = shoppingListHelper;
         this.shoppingListProductHelper = shoppingListProductHelper;
+
+        this.shoppingListAdapter = shoppingListAdapter;
 
         this.products = products;
         this.shoppingListProducts = new ArrayList<>();
@@ -107,18 +112,23 @@ public class AddNewShoppingList extends Fragment implements RecyclerViewOnClickL
                 String shoppingListName = listNameView == null ? "" : listNameView.getText().toString();
 
                 shoppingList.setName(shoppingListName);
-                List<Product> shoppingListProducts = addNewShoppingListAdapter.getShoppingListProducts();
-                shoppingList.setProducts(shoppingListProducts);
+                List<Product> productsFromRV = addNewShoppingListAdapter.getShoppingListProducts();
+                shoppingList.setProducts(productsFromRV);
 
-                double totalPrice = shoppingListProducts.stream().mapToDouble(Product::getPrice).sum();
+                double totalPrice = productsFromRV.stream().mapToDouble(Product::getPrice).sum();
                 shoppingList.setTotalPrice(totalPrice);
 
                 long shoppingListId = shoppingListHelper.insertShoppingList(shoppingList);
 
                 for (Product product:
-                     shoppingListProducts) {
-                    ShoppingListProduct shoppingListProduct = new ShoppingListProduct(shoppingListId, product.getId());
+                        productsFromRV) {
+                    shoppingListProductHelper.insertShoppingList(new ShoppingListProduct(shoppingListId, product.getId()));
                 }
+
+                shoppingList.setId(shoppingListId);
+
+                shoppingListAdapter.addShoppingList(shoppingList);
+                shoppingListAdapter.notifyDataSetChanged();
             }
         });
     }

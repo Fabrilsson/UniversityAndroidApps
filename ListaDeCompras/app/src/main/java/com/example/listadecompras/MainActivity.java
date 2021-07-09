@@ -22,6 +22,7 @@ import com.example.listadecompras.domain.ShoppingListHelper;
 import com.example.listadecompras.domain.ShoppingListProductHelper;
 import com.example.listadecompras.domain.model.Product;
 import com.example.listadecompras.domain.model.ShoppingList;
+import com.example.listadecompras.domain.model.ShoppingListProduct;
 import com.example.listadecompras.main.AddNewShoppingList;
 import com.example.listadecompras.util.RecyclerViewOnClickListenerHack;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewOnCli
         shoppingListHelper = new ShoppingListHelper(this);
         productsHelper = new ProductsHelper(this);
         shoppingListHelper = new ShoppingListHelper(this);
+        shoppingListProductHelper = new ShoppingListProductHelper(this);
 
         shoppingLists.addAll(shoppingListHelper.getAllShoppingLists());
         products.addAll(productsHelper.getAllProducts());
@@ -101,11 +103,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewOnCli
     private void deleteShoppingList(ShoppingList shoppingList, int position) {
         shoppingLists.remove(position);
         shoppingListHelper.deleteShoppingList(shoppingList);
+
+        shoppingListProductHelper.deleteShoppingListProductsFromShoppingListId(shoppingList.getId());
+
         shoppingListAdapter.notifyDataSetChanged();
     }
 
     private void showAddNewFragment() {
-        Fragment newShoppingListFragment = new AddNewShoppingList(shoppingListHelper, shoppingListProductHelper, products);
+        Fragment newShoppingListFragment = new AddNewShoppingList(shoppingListHelper, shoppingListAdapter, shoppingListProductHelper, products);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.MainActivity, newShoppingListFragment);
         transaction.setReorderingAllowed(true);
