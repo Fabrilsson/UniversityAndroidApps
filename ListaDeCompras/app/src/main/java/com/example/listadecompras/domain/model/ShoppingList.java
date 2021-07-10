@@ -7,13 +7,13 @@ import java.util.List;
 
 public class ShoppingList {
 
-    private int id;
+    private long id;
     private String name;
     private List<Product> products;
     private Date dataHora;
     private double totalPrice;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -33,7 +33,7 @@ public class ShoppingList {
         return totalPrice;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -18,59 +18,63 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.example.listadecompras.R;
 import com.example.listadecompras.adapter.AddNewShoppingListAdapter;
+import com.example.listadecompras.adapter.EditShoppingListAdapter;
 import com.example.listadecompras.adapter.ShoppingListAdapter;
-import com.example.listadecompras.domain.ProductsHelper;
 import com.example.listadecompras.domain.ShoppingListHelper;
 import com.example.listadecompras.domain.ShoppingListProductHelper;
 import com.example.listadecompras.domain.model.Product;
 import com.example.listadecompras.domain.model.ShoppingList;
 import com.example.listadecompras.domain.model.ShoppingListProduct;
 import com.example.listadecompras.util.RecyclerViewOnClickListenerHack;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class AddNewShoppingList extends Fragment implements RecyclerViewOnClickListenerHack {
+public class EditShoppingList extends Fragment implements RecyclerViewOnClickListenerHack {
 
     private ShoppingListHelper shoppingListHelper;
     private ShoppingListProductHelper shoppingListProductHelper;
 
     private ShoppingListAdapter shoppingListAdapter;
-    private AddNewShoppingListAdapter addNewShoppingListAdapter;
+    private EditShoppingListAdapter editShoppingListAdapter;
     private List<Product> products;
     private List<Product> shoppingListProducts;
 
     private RecyclerView rv;
 
+    private ShoppingList shoppingList;
+
     private EditText shoppingListPrice;
 
-    public AddNewShoppingList(
+    public EditShoppingList(
             ShoppingListHelper shoppingListHelper,
             ShoppingListAdapter shoppingListAdapter,
             ShoppingListProductHelper shoppingListProductHelper,
-            List<Product> products)
-    {
+            List<Product> products,
+            ShoppingList shoppingList) {
         this.shoppingListHelper = shoppingListHelper;
         this.shoppingListProductHelper = shoppingListProductHelper;
 
         this.shoppingListAdapter = shoppingListAdapter;
 
         this.products = products;
-        this.shoppingListProducts = new ArrayList<>();
 
-        this.addNewShoppingListAdapter = new AddNewShoppingListAdapter(shoppingListProducts);
-        this.addNewShoppingListAdapter.setRecyclerViewOnClickListenerHack(this);
+        this.shoppingList = shoppingList;
+
+        this.shoppingListProducts = shoppingListProductHelper.getShoppingListProducts(shoppingList.getId());
+
+        this.editShoppingListAdapter = new EditShoppingListAdapter(shoppingListProducts, shoppingList);
+        this.editShoppingListAdapter.setRecyclerViewOnClickListenerHack(this);
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -79,7 +83,13 @@ public class AddNewShoppingList extends Fragment implements RecyclerViewOnClickL
 
         shoppingListPrice = view.findViewById(R.id.shoppingListPrice);
 
+        updateScreenListPrice();
+
         products.add(0, new Product(0, "Select", 0));
+
+        EditText listName = (EditText)view.findViewById(R.id.ListName);
+
+        listName.setText(shoppingList.getName());
 
         Spinner spinner = (Spinner)view.findViewById(R.id.spinner);
         ArrayAdapter adapter = new ArrayAdapter(getActivity() , R.layout.simple_spinner_dropdown_item, products);
@@ -88,12 +98,16 @@ public class AddNewShoppingList extends Fragment implements RecyclerViewOnClickL
         spinner.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
                     @Override
-                    public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         Product p = (Product)spinner.getSelectedItem();
 
                         if(p.getId() != 0) {
                             shoppingListProducts.add(0, p);
-                            addNewShoppingListAdapter.notifyDataSetChanged();
+
+                            ShoppingListProduct shoppingListProduct = new ShoppingListProduct(shoppingList.getId(), p.getId());
+
+                            shoppingListProductHelper.insertShoppingListProduct(shoppingListProduct);
+                            editShoppingListAdapter.notifyDataSetChanged();
 
                             updateScreenListPrice();
                         }
@@ -110,24 +124,38 @@ public class AddNewShoppingList extends Fragment implements RecyclerViewOnClickL
         rv.setLayoutManager(new GridLayoutManager(getActivity(), 1));
         rv.setHasFixedSize(true);
 
-        rv.setAdapter(addNewShoppingListAdapter);
+        rv.setAdapter(editShoppingListAdapter);
 
         Button saveButton = (Button)view.findViewById(R.id.saveShoppingList);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewShoppingList(view);
+
+                shoppingList.setDataHora(new Date());
+
+                EditText listNameView = (EditText)view.findViewById(R.id.ListName);
+                String shoppingListName = listNameView == null ? "" : listNameView.getText().toString();
+
+                shoppingList.setName(shoppingListName);
+                List<Product> productsFromRV = editShoppingListAdapter.getShoppingListProducts();
+                shoppingList.setProducts(productsFromRV);
+
+                double totalPrice = productsFromRV.stream().mapToDouble(Product::getPrice).sum();
+                shoppingList.setTotalPrice(totalPrice);
+
+                shoppingListHelper.updateShoppingList(shoppingList);
+
+                shoppingListAdapter.updateShoppingList(shoppingList);
+                shoppingListAdapter.notifyDataSetChanged();
             }
         });
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_new_shopping_list, container, false);
-
-        return view;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_edit_shopping_list, container, false);
     }
 
     @Override
@@ -152,38 +180,11 @@ public class AddNewShoppingList extends Fragment implements RecyclerViewOnClickL
     private void deleteShoppingListProduct(Product shoppingListProduct, int position) {
         shoppingListProducts.remove(position);
         shoppingListProductHelper.deleteProduct(shoppingListProduct);
-        addNewShoppingListAdapter.notifyDataSetChanged();
+        editShoppingListAdapter.notifyDataSetChanged();
 
         double totalPrice = shoppingListProducts.stream().mapToDouble(Product::getPrice).sum();
 
         shoppingListPrice.setText(String.valueOf(totalPrice));
-    }
-
-    private void addNewShoppingList(View view){
-        ShoppingList shoppingList = new ShoppingList();
-        shoppingList.setDataHora(new Date());
-
-        EditText listNameView = (EditText)view.findViewById(R.id.ListName);
-        String shoppingListName = listNameView == null ? "" : listNameView.getText().toString();
-
-        shoppingList.setName(shoppingListName);
-        List<Product> productsFromRV = addNewShoppingListAdapter.getShoppingListProducts();
-        shoppingList.setProducts(productsFromRV);
-
-        double totalPrice = productsFromRV.stream().mapToDouble(Product::getPrice).sum();
-        shoppingList.setTotalPrice(totalPrice);
-
-        long shoppingListId = shoppingListHelper.insertShoppingList(shoppingList);
-
-        for (Product product:
-                productsFromRV) {
-            shoppingListProductHelper.insertShoppingListProduct(new ShoppingListProduct(shoppingListId, product.getId()));
-        }
-
-        shoppingList.setId(shoppingListId);
-
-        shoppingListAdapter.addShoppingList(shoppingList);
-        shoppingListAdapter.notifyDataSetChanged();
     }
 
     private void updateScreenListPrice(){

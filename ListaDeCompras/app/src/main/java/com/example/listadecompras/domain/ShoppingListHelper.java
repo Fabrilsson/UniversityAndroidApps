@@ -41,11 +41,6 @@ public class ShoppingListHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public void dropTable(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DROP TABLE IF EXISTS " + ShoppingList.ShoppingListEntry.TABLE_NAME);
-    }
-
     public long insertShoppingList(ShoppingList shoppingList) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

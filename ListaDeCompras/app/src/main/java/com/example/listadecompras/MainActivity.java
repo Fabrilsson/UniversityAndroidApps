@@ -1,5 +1,7 @@
 package com.example.listadecompras;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -7,9 +9,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -22,7 +26,9 @@ import com.example.listadecompras.domain.ShoppingListHelper;
 import com.example.listadecompras.domain.ShoppingListProductHelper;
 import com.example.listadecompras.domain.model.Product;
 import com.example.listadecompras.domain.model.ShoppingList;
+import com.example.listadecompras.domain.model.ShoppingListProduct;
 import com.example.listadecompras.main.AddNewShoppingList;
+import com.example.listadecompras.main.EditShoppingList;
 import com.example.listadecompras.util.RecyclerViewOnClickListenerHack;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -42,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewOnCli
     private List<ShoppingList> shoppingLists = new ArrayList<>();
     private List<Product> products = new ArrayList<>();
 
+    private FloatingActionButton fab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewOnCli
         shoppingListHelper = new ShoppingListHelper(this);
         productsHelper = new ProductsHelper(this);
         shoppingListHelper = new ShoppingListHelper(this);
+        shoppingListProductHelper = new ShoppingListProductHelper(this);
 
         shoppingLists.addAll(shoppingListHelper.getAllShoppingLists());
         products.addAll(productsHelper.getAllProducts());
@@ -62,18 +71,28 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewOnCli
         shoppingListAdapter.setRecyclerViewOnClickListenerHack(this);
         mRecyclerView.setAdapter(shoppingListAdapter);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showAddNewFragment();
+                fab.hide();
             }
         });
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        fab.show();
+    }
+
+    @Override
     public void onClickListener(View view, int position) {
         showActionsDialog(shoppingLists.get(position), position);
+        fab.hide();
     }
 
     @Override
@@ -89,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewOnCli
             @Override
             public void onClick(DialogInterface dialog, int acao) {
                 if (acao == 0) {
-                    showShoppingListDialog(true, shoppingList, position);
+                    showEditFragment(shoppingList);
                 } else {
                     deleteShoppingList(shoppingList, position);
                 }
@@ -101,11 +120,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewOnCli
     private void deleteShoppingList(ShoppingList shoppingList, int position) {
         shoppingLists.remove(position);
         shoppingListHelper.deleteShoppingList(shoppingList);
+
+        shoppingListProductHelper.deleteShoppingListProductsFromShoppingListId(shoppingList.getId());
+
         shoppingListAdapter.notifyDataSetChanged();
     }
 
     private void showAddNewFragment() {
-        Fragment newShoppingListFragment = new AddNewShoppingList(shoppingListHelper, shoppingListProductHelper, products);
+        Fragment newShoppingListFragment = new AddNewShoppingList(shoppingListHelper, shoppingListAdapter, shoppingListProductHelper, products);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.MainActivity, newShoppingListFragment);
         transaction.setReorderingAllowed(true);
@@ -113,55 +135,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewOnCli
         transaction.commit();
     }
 
-    private void showShoppingListDialog(final boolean shouldUpdate, final ShoppingList shoppingList, final int position) {
-        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getApplicationContext());
-        View view = layoutInflaterAndroid.inflate(R.layout.lembrete_dialog, null);
-
-        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(MainActivity.this);
-        alertDialogBuilderUserInput.setView(view);
-
-        final EditText inputNote = view.findViewById(R.id.note);
-        TextView dialogTitle = view.findViewById(R.id.dialog_title);
-        dialogTitle.setText(!shouldUpdate ? getString(R.string.label_novo_lembrete) : getString(R.string.label_editar_lembrete));
-
-        if (shouldUpdate && shoppingList != null) {
-            inputNote.setText(shoppingList.getName());
-        }
-        alertDialogBuilderUserInput
-                .setCancelable(false)
-                .setPositiveButton(shouldUpdate ? "Editar" : "Salvar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogBox, int id) {
-
-                    }
-                })
-                .setNegativeButton("Cancelar",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialogBox, int id) {
-                                dialogBox.cancel();
-                            }
-                        });
-
-        final AlertDialog alertDialog = alertDialogBuilderUserInput.create();
-        alertDialog.show();
-
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(inputNote.getText().toString())) {
-                    Toast.makeText(MainActivity.this, "Digite um lembrete!", Toast.LENGTH_SHORT).show();
-                    return;
-                } else {
-                    alertDialog.dismiss();
-                }
-
-                //if (shouldUpdate && shoppingList != null) {
-                //    updateShoppingList(inputNote.getText().toString(), position);
-                //} else {
-                //    insertShoppingList(inputNote.getText().toString());
-                //}
-            }
-        });
+    private void showEditFragment(ShoppingList shoppingList) {
+        Fragment editShoppingListFragment = new EditShoppingList(shoppingListHelper, shoppingListAdapter, shoppingListProductHelper, products, shoppingList);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.MainActivity, editShoppingListFragment);
+        transaction.setReorderingAllowed(true);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
-
-
 }

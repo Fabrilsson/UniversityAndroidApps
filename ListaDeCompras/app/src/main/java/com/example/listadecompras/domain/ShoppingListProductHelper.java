@@ -41,7 +41,7 @@ public class ShoppingListProductHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public long insertShoppingList(ShoppingListProduct shoppingListProduct) {
+    public long insertShoppingListProduct(ShoppingListProduct shoppingListProduct) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(ShoppingListProduct.ShoppingListProductEntry.SHOPPINGLISTPRODUCTS_PRODUCTID_COLUMN, shoppingListProduct.getProductId());
@@ -52,18 +52,35 @@ public class ShoppingListProductHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    public void deleteShoppingList(ShoppingListProduct shoppingListProduct) {
+    public void deleteShoppingListProductsFromShoppingListId(long id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(ShoppingListProduct.ShoppingListProductEntry.TABLE_NAME, ShoppingListProduct.ShoppingListProductEntry._ID + " = ?",
-                new String[]{String.valueOf(shoppingListProduct.getId())});
+
+        db.delete(
+                ShoppingListProduct.ShoppingListProductEntry.TABLE_NAME,
+                ShoppingListProduct.ShoppingListProductEntry.SHOPPINGLISTPRODUCTS_SHOPPINGLISTID_COLUMN + " = ?",
+                new String[]{String.valueOf(id)}
+                );
+
         db.close();
     }
 
-    public List<Product> getShoppingListProducts(int shoppingListId) {
+    public void deleteProduct(Product product){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(
+                ShoppingListProduct.ShoppingListProductEntry.TABLE_NAME,
+                ShoppingListProduct.ShoppingListProductEntry.SHOPPINGLISTPRODUCTS_PRODUCTID_COLUMN + " = ?",
+                new String[]{String.valueOf(product.getId())}
+        );
+
+        db.close();
+    }
+
+    public List<Product> getShoppingListProducts(long shoppingListId) {
         List<Product> products = new ArrayList<>();
 
-        String selectQuery = "SELECT P.id, P.name, P.price FROM " + Product.ProductEntry.TABLE_NAME + " AS P INNER JOIN " +
-                ShoppingListProduct.ShoppingListProductEntry.TABLE_NAME + " AS SLP ON P.id == SLP.productId WHERE " +
+        String selectQuery = "SELECT P." + Product.ProductEntry._ID + ", P.name, P.price FROM " + Product.ProductEntry.TABLE_NAME + " AS P INNER JOIN " +
+                ShoppingListProduct.ShoppingListProductEntry.TABLE_NAME + " AS SLP ON P." + Product.ProductEntry._ID + " == SLP.productId WHERE " +
                 ShoppingListProduct.ShoppingListProductEntry.SHOPPINGLISTPRODUCTS_SHOPPINGLISTID_COLUMN + " == "
                 + shoppingListId + " ORDER BY " + Product.ProductEntry.PRODUCT_NAME_COLUMN + " DESC";
 
