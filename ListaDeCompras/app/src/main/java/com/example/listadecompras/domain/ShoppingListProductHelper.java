@@ -41,7 +41,7 @@ public class ShoppingListProductHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public long insertShoppingList(ShoppingListProduct shoppingListProduct) {
+    public long insertShoppingListProduct(ShoppingListProduct shoppingListProduct) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(ShoppingListProduct.ShoppingListProductEntry.SHOPPINGLISTPRODUCTS_PRODUCTID_COLUMN, shoppingListProduct.getProductId());
@@ -60,6 +60,18 @@ public class ShoppingListProductHelper extends SQLiteOpenHelper {
                 ShoppingListProduct.ShoppingListProductEntry.SHOPPINGLISTPRODUCTS_SHOPPINGLISTID_COLUMN + " = ?",
                 new String[]{String.valueOf(id)}
                 );
+
+        db.close();
+    }
+
+    public void deleteProduct(Product product){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(
+                ShoppingListProduct.ShoppingListProductEntry.TABLE_NAME,
+                ShoppingListProduct.ShoppingListProductEntry.SHOPPINGLISTPRODUCTS_PRODUCTID_COLUMN + " = ?",
+                new String[]{String.valueOf(product.getId())}
+        );
 
         db.close();
     }

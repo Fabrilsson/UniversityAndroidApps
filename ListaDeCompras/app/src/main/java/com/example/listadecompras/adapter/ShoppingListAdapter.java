@@ -14,6 +14,7 @@ import com.example.listadecompras.util.RecyclerViewOnClickListenerHack;
 import com.example.listadecompras.util.Util;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapter.ViewHolder> {
@@ -83,5 +84,16 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             list = new ArrayList<>();
 
         list.add(shoppingList);
+
+        list.sort(Comparator.comparing(ShoppingList::getId, Comparator.reverseOrder()));
+    }
+
+    public void updateShoppingList(ShoppingList shoppingList){
+
+        list.removeIf(s -> s.getId() == shoppingList.getId());
+
+        list.add(shoppingList);
+
+        list.sort(Comparator.comparing(ShoppingList::getId, Comparator.reverseOrder()));
     }
 }
