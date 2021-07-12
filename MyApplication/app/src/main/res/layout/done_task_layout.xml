@@ -20,6 +20,7 @@
             tool:text="This is a sample text"
             android:paddingStart="8dp"
             android:buttonTint="@color/purple_700"
+            android:onClick="testOnclick"
             android:checked="true">
 
         </CheckBox>

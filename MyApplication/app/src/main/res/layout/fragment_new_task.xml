@@ -1,13 +1,16 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+<RelativeLayout
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_margin="10dp"
     android:background="@drawable/new_task_background"
-    android:clickable="true"
-    >
+    android:clickable="true">
 
     <EditText
-        android:id="@+id/taskDescription"
+        android:id="@+id/taskName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="TestTxt"
@@ -27,7 +30,7 @@
         android:background="@drawable/top_text"
         android:layout_margin="20dp"
         android:gravity="center"
-        android:layout_below="@id/taskDescription">
+        android:layout_below="@id/taskName">
 
     </Button>
 
@@ -79,9 +82,22 @@
         android:paddingStart="20dp"
         android:layout_below="@id/taskAddFile"
         android:textColor="@color/white"
-        android:background="@drawable/bottom_task"
+        android:background="@drawable/bottom_text"
         android:gravity="top">
 
     </EditText>
 
+    <Button
+        android:id="@+id/saveTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:textSize="20dp"
+        android:layout_margin="20dp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:layout_below="@id/taskAnotation"/>
+
 </RelativeLayout>
+
+</ScrollView>
