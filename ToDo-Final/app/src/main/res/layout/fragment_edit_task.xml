@@ -1,0 +1,110 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="@color/gray">
+
+    <RelativeLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:background="@color/gray"
+        android:clickable="true">
+
+        <EditText
+            android:id="@+id/taskName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit Task"
+            android:textSize="40dp"
+            android:textColor="@color/black"
+            android:background="@color/gray"
+            android:gravity="center">
+
+        </EditText>
+
+        <Button
+            android:id="@+id/taskRemember"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/taskName"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/gray"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:text="Remember me"
+            android:textSize="20dp">
+
+        </Button>
+
+        <Button
+            android:id="@+id/taskAddFinishDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Finish"
+            android:textSize="20dp"
+            android:background="@color/gray"
+            android:textColor="@color/black"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:layout_below="@id/taskRemember">
+
+        </Button>
+
+        <Button
+            android:id="@+id/taskRepeat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Repeat"
+            android:textSize="20dp"
+            android:background="@color/gray"
+            android:textColor="@color/black"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:layout_below="@id/taskAddFinishDate">
+
+        </Button>
+
+        <Button
+            android:id="@+id/taskAddFile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add File"
+            android:textSize="20dp"
+            android:background="@color/gray"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:layout_below="@id/taskRepeat">
+
+        </Button>
+        <EditText
+            android:id="@+id/taskAnotation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Text edit"
+            android:textSize="30dp"
+            android:gravity="center"
+            android:paddingStart="20dp"
+            android:layout_below="@id/taskAddFile"
+            android:textColor="@color/white"
+            android:background="@drawable/bottom_text">
+
+        </EditText>
+
+
+        <Button
+            android:id="@+id/saveTask"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:textSize="20dp"
+            android:layout_margin="20dp"
+            android:textColor="@color/black"
+            android:background="@color/gray"
+            android:gravity="center"
+            android:layout_below="@id/taskAnotation"/>
+
+    </RelativeLayout>
+
+</ScrollView>
